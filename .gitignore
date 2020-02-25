@@ -4,4 +4,4 @@
      logs
      *.iml
      target/
-/.idea/
+    /.idea/
