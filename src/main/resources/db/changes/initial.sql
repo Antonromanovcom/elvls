@@ -1,0 +1,9 @@
+
+create table elvls.QUOTE
+(
+    ID BIGINT PRIMARY KEY NOT NULL,
+    ASK DOUBLE PRECISION,
+    BID DOUBLE PRECISION,
+    ISIN VARCHAR(12)
+);
+
