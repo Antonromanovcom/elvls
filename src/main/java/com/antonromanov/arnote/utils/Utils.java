@@ -232,10 +232,11 @@ public class Utils {
 		Quote wishAfterParse;
 		Date currentDate = new Date();
 
-		try {
+//		try {
 
-			if (parseType == ParseType.EDIT) {
-				wishAfterParse = new Quote(
+		if (parseType == ParseType.EDIT) {
+			wishAfterParse = null;
+				/*wishAfterParse = new Quote(
 						JSONTemplate.fromString(json).get("id").getAsLong(),
 						JSONTemplate.fromString(json).get("wish").getAsString(),
 						JSONTemplate.fromString(json).get("price").getAsInt(),
@@ -248,11 +249,14 @@ public class Utils {
 				boolean realizedWish = JSONTemplate.fromString(json).get("realized").getAsBoolean();
 				if (realizedWish) {
 					wishAfterParse.setRealized(true);
-					wishAfterParse.setRealizationDate(new Date());
-				}
+					wishAfterParse.setRealizationDate(new Date());*/
+		//}
 
-			} else {
-				wishAfterParse = new Quote(
+	} else
+
+	{
+		//	wishAfterParse = null;
+			/*	wishAfterParse = new Quote(
 						JSONTemplate.fromString(json).get("wish").getAsString(),
 						JSONTemplate.fromString(json).get("price").getAsInt(),
 						JSONTemplate.fromString(json).get("priority").getAsInt(),
@@ -262,14 +266,16 @@ public class Utils {
 						user
 				);
 
-				wishAfterParse.setCreationDate(currentDate);
+				wishAfterParse.setCreationDate(currentDate);*/
 
-			}
-		} catch (Exception e) {
+	}
+		/*} catch (Exception e) {
 			throw new JsonParseException(json);
-		}
+		}*/
 
-		return wishAfterParse;
+//		return wishAfterParse;
+		return null;
+
 	}
 
 	public static String generateRandomPassword() {
@@ -307,7 +313,7 @@ public class Utils {
 	}
 
 	public static WishDTO prepareWishDTO(Quote w, int maxPrior) {
-		return WishDTO.builder()
+		/*return WishDTO.builder()
 				.id(w.getId())
 //				.wish(w.getWish().length()<50 ? w.getWish() : w.getWish().substring(0, 50) + "...")
 				.wish(w.getWish())
@@ -319,7 +325,8 @@ public class Utils {
 				.priorityGroup(w.getPriorityGroup())
 				.priorityGroupOrder(w.getPriorityGroupOrder())
 				.month(computerMonth(w.getPriorityGroup() == null ? maxPrior : w.getPriorityGroup()))
-				.build();
+				.build();*/
+		return null;
 	}
 
 	public static String getClassColorByMonth(int month, boolean overdraft) {

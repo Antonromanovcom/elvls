@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import static com.antonromanov.arnote.utils.Utils.*;
 
-
 @Service
 public class MainServiceImpl implements MainService {
 
@@ -43,26 +42,27 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public int getMaxPriority(LocalUser user) {
-        List<Quote> wishDTOList = wishRepository.getAllWithGroupOrder(user);
+      /*  List<Quote> wishDTOList = wishRepository.getAllWithGroupOrder(user);
         Comparator<Quote> comparator = Comparator.comparing( Quote::getPriorityGroup);
 
         if ((wishDTOList.stream().filter(wish -> wish.getPriorityGroup()!=null).max(comparator).isPresent())) {
             return (wishDTOList.stream().filter(wish -> wish.getPriorityGroup() != null).max(comparator).get().getPriorityGroup()) + 1;
         } else {
             return 1;
-        }
+        }*/
+      return 1;
     }
 
     @Override
     public int getMinPriority(LocalUser user) {
-        List<Quote> wishDTOList = wishRepository.getAllWithGroupOrder(user);
+        /*List<Quote> wishDTOList = wishRepository.getAllWithGroupOrder(user);
         Comparator<Quote> comparator = Comparator.comparing( Quote::getPriorityGroup);
 
         if ((wishDTOList.stream().filter(wish -> wish.getPriorityGroup()!=null && wish.getPriorityGroup()!=0).min(comparator).isPresent())) {
             return (wishDTOList.stream().filter(wish -> wish.getPriorityGroup() != null).min(comparator).get().getPriorityGroup()) + 1;
-        } else {
+        } else {*/
             return 1;
-        }
+//        }
     }
 
     private void addIteminWishDTOListForNullPriorityWishes(List<WishDTOList> wishDTOListGlobal,
@@ -94,15 +94,15 @@ public class MainServiceImpl implements MainService {
             int currentMonth = 1;
             while (currentMonth < maxPrior){
 
-                int finalCurrentMonth = currentMonth;
+               /* int finalCurrentMonth = currentMonth;
                 List<WishDTO> wishDTOListFiltered = wishRepository.getAllWithGroupOrder(user)
                         .stream()
                         .filter(wish -> wish.getPriorityGroup()!=null)
                         .filter(wish -> wish.getPriorityGroup()== finalCurrentMonth)
                         .map(w -> prepareWishDTO(w, maxPrior))
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toList());*/
 
-                wishDTOListGlobal.add(WishDTOList.builder()
+               /* wishDTOListGlobal.add(WishDTOList.builder()
                         .wishList(wishDTOListFiltered)
                         .monthNumber(computerMonthNumber(currentMonth))
                         .monthName(computerMonth(currentMonth))
@@ -112,18 +112,18 @@ public class MainServiceImpl implements MainService {
                         .overflow((wishDTOListFiltered.stream().map(WishDTO::getPrice).reduce(0, ArithmeticUtils::addAndCheck))>getLastSalary(user).getResidualSalary())
                         .colorClass(getClassColorByMonth(computerMonthNumber(currentMonth), (wishDTOListFiltered.stream().map(WishDTO::getPrice).reduce(0, ArithmeticUtils::addAndCheck))>getLastSalary(user).getResidualSalary()))
                         .expanded(true)
-                        .build());
+                        .build());*/
 
                 currentMonth++;
             }
 
-            List<WishDTO> wishDTOListFiltered = wishRepository.getAllWithGroupOrder(user)
+           /* List<WishDTO> wishDTOListFiltered = wishRepository.getAllWithGroupOrder(user)
                     .stream()
                     .filter(wish -> wish.getPriorityGroup()==null)
                     .map(w -> prepareWishDTO(w, maxPrior))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList());*/
 
-            addIteminWishDTOListForNullPriorityWishes(wishDTOListGlobal, wishDTOListFiltered, maxPrior, user);
+//            addIteminWishDTOListForNullPriorityWishes(wishDTOListGlobal, wishDTOListFiltered, maxPrior, user);
 
         } else {
 
@@ -156,7 +156,7 @@ public class MainServiceImpl implements MainService {
     @Override
     public Quote updateMonthGroup(Quote wish) throws BadIncomeParameter {
         Quote searchedWish = wishRepository.findById(wish.getId()).orElseThrow(()->new BadIncomeParameter(BadIncomeParameter.ParameterKind.WISH_ID_SEARCH));
-        wish.setPriorityGroup(searchedWish.getPriorityGroup());
+//        wish.setPriorityGroup(searchedWish.getPriorityGroup());
         return wish;
     }
 
@@ -182,12 +182,14 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public Integer getSumm4All(LocalUser user) {
-        return wishRepository.findAllByIdSorted(user).stream().map(Quote::getPrice).reduce(0, ArithmeticUtils::addAndCheck);
+//        return wishRepository.findAllByIdSorted(user).stream().map(Quote::getPrice).reduce(0, ArithmeticUtils::addAndCheck);
+        return 1;
     }
 
     @Override
     public Integer getSumm4Prior(LocalUser user) {
-        return wishRepository.getAllWithPriority1(user).stream().map(Quote::getPrice).reduce(0, ArithmeticUtils::addAndCheck);
+//        return wishRepository.getAllWithPriority1(user).stream().map(Quote::getPrice).reduce(0, ArithmeticUtils::addAndCheck);
+        return 1;
     }
 
     @Override
@@ -246,7 +248,7 @@ public class MainServiceImpl implements MainService {
 
                         if (wishes.size() < 1) {
                             //нету? добавляем
-                            wishRepository.save(new Quote(localWish, localPrice, 1, 1, false, "from csv", "", localUser, new Date()));
+//                            wishRepository.save(new Quote(localWish, localPrice, 1, 1, false, "from csv", "", localUser, new Date()));
                             addCount++;
                         }
                     });

@@ -78,12 +78,12 @@ public class MainRestController extends ControllerBase {
 			LOGGER.info("PRINCIPAL: " + principal.getName());
 			LocalUser localUser = getUserFromPrincipal(principal);
 
-			List<Quote> wishes = mainService
+		/*	List<Quote> wishes = mainService
 					.findAllWishesByWish(parseJsonToWish(ParseType.EDIT, requestParam, localUser).getWish(), localUser)
-					.orElseGet(ArrayList::new);
+					.orElseGet(ArrayList::new);*/
 
 			DTO dto = new DTO();
-			dto.list.addAll(wishes);
+//			dto.list.addAll(wishes);
 
 			String res = createGsonBuilder().toJson(dto);
 			LOGGER.info("PAYLOAD: " + res);
@@ -147,7 +147,7 @@ public class MainRestController extends ControllerBase {
 			LOGGER.info("id: " + id);
 
 			Quote wish = mainService.getWishById(Integer.parseInt(id)).orElseThrow(() -> new BadIncomeParameter(BadIncomeParameter.ParameterKind.WISH_ID_SEARCH));
-			wish.setPriorityGroup(parseMonthAndCalculatePriority(month));
+//			wish.setPriorityGroup(parseMonthAndCalculatePriority(month));
 
 			String result = createNullableGsonBuilder().toJson(mainService.updateAndFlushWish(wish));
 			return $prepareResponse(result);
@@ -176,8 +176,8 @@ public class MainRestController extends ControllerBase {
 
 					// Предотвращение вываливания на пустых датах
 					wishList.forEach(w -> {
-						if (w.getCreationDate() == null) w.setCreationDate(new Date());
-						if (w.getRealized() == null) w.setRealized(false);
+//						if (w.getCreationDate() == null) w.setCreationDate(new Date());
+//						if (w.getRealized() == null) w.setRealized(false);
 					});
 
 					dto.list.addAll(wishList);
@@ -234,9 +234,9 @@ public class MainRestController extends ControllerBase {
 			newWish = mainService.addWish(parseJsonToWish(ParseType.ADD, requestParam, localUser));
 
 			// Предотвращение вываливания на пустых датах
-			if (newWish.getCreationDate() == null) newWish.setCreationDate(new Date());
-			if (newWish.getRealized() == null) newWish.setRealized(false);
-			if (newWish.getRealizationDate() == null) newWish.setRealizationDate(new Date());
+//			if (newWish.getCreationDate() == null) newWish.setCreationDate(new Date());
+//			if (newWish.getRealized() == null) newWish.setRealized(false);
+//			if (newWish.getRealizationDate() == null) newWish.setRealizationDate(new Date());
 
 			String result = createGsonBuilder().toJson(newWish);
 			LOGGER.info("PAYLOAD: " + result);
@@ -257,13 +257,13 @@ public class MainRestController extends ControllerBase {
 
 			LocalUser localUser = getUserFromPrincipal(principal);
 			Quote newWish = new Quote();
-			newWish.setWishPicture(wishWithPicture.base64StringToPng());
-			newWish.setWish("TEST WISH WITH PICTURE");
+//			newWish.setWishPicture(wishWithPicture.base64StringToPng());
+//			newWish.setWish("TEST WISH WITH PICTURE");
 			Quote savedWish = mainService.addWish(newWish);
-			ByteArrayInputStream bis = new ByteArrayInputStream(savedWish.getWishPicture());
+//			ByteArrayInputStream bis = new ByteArrayInputStream(savedWish.getWishPicture());
 
-			BufferedImage bImage2 = ImageIO.read(bis);
-			ImageIO.write(bImage2, "png", new File("output.png") );
+//			BufferedImage bImage2 = ImageIO.read(bis);
+//			ImageIO.write(bImage2, "png", new File("output.png") );
 			System.out.println("image created");
 
 
@@ -289,13 +289,13 @@ public class MainRestController extends ControllerBase {
 
 			if (mainService.getAllRealizedWishes(localUser).isPresent()) {
 
-				List<Long> realizedWishes = mainService.getAllRealizedWishes(localUser).get().stream()
+				/*List<Long> realizedWishes = mainService.getAllRealizedWishes(localUser).get().stream()
 						.filter(wf -> wf.getRealizationDate() != null && wf.getCreationDate() != null)
-						.map(w -> (w.getRealizationDate().getTime() - w.getCreationDate().getTime())).collect(Collectors.toList());
-				Optional<Long> summ = realizedWishes.stream().reduce((l, r) -> l + r);
-				if (summ.isPresent()) {
+						.map(w -> (w.getRealizationDate().getTime() - w.getCreationDate().getTime())).collect(Collectors.toList());*/
+//				Optional<Long> summ = realizedWishes.stream().reduce((l, r) -> l + r);
+				/*if (summ.isPresent()) {
 					localAverageImplementationTime = (summ.get()) / realizedWishes.size();
-				}
+				}*/
 				days = (int) (localAverageImplementationTime / (1000 * 60 * 60 * 24)); // Переводим в кол-во дней
 
 				implemetedSummAllTime = mainService.getImplementedSum(localUser, 1).orElseGet(() -> 0);
@@ -331,7 +331,7 @@ public class MainRestController extends ControllerBase {
 			LOGGER.info("========= DELETE WISH ============== ");
 			LOGGER.info("ID: " + id);
 			Quote wish = mainService.getWishById(Integer.parseInt(id)).orElseThrow(() -> new BadIncomeParameter(BadIncomeParameter.ParameterKind.WRONG_ID));
-			wish.setAc(true);
+//			wish.setAc(true);
 			mainService.updateWish(wish);
 			return $prepareResponse(createGsonBuilder().toJson(ResponseStatusDTO.builder().okMessage("OK").status("OK").build()));
 		}, null, null, null, resp);
@@ -426,7 +426,7 @@ public class MainRestController extends ControllerBase {
 
 			Quote wish = checkParametersAndGetWish(id, move);
 
-			switch (move) {
+			/*switch (move) {
 				case "down":
 					if (wish.getPriority() > 1) wish.setPriority(wish.getPriority() - 1);
 					mainService.updateWish(wish);
@@ -436,7 +436,7 @@ public class MainRestController extends ControllerBase {
 					wish.setPriority(wish.getPriority() + 1);
 					mainService.updateWish(wish);
 					break;
-			}
+			}*/
 
 			String result = createNullableGsonBuilder().toJson(wish);
 
@@ -478,18 +478,18 @@ public class MainRestController extends ControllerBase {
 			switch (move) {
 				case "down":
 
-					if (maxPrior != 0) {
+					/*if (maxPrior != 0) {
 						if (wish.getPriorityGroup() < maxPrior + 1) {
 							wish.setPriorityGroup(wish.getPriorityGroup() + 1);
 						}
 						LOGGER.info("move summary: " + (wish.getPriorityGroup() + 1));
 						mainService.updateWish(wish);
 						break;
-					}
+					}*/
 
 				case "up":
 
-					if (maxPrior == 0) {
+					/*if (maxPrior == 0) {
 						LOGGER.info("max prior = 0. move summary: 1");
 						wish.setPriorityGroup(1);
 					} else {
@@ -500,16 +500,16 @@ public class MainRestController extends ControllerBase {
 							LOGGER.info("move summary: " + (wish.getPriorityGroup() - 1));
 							wish.setPriorityGroup(wish.getPriorityGroup() - 1);
 						}
-					}
+					}*/
 
 					mainService.updateWish(wish);
 					break;
 			}
 
 			Date currentDate = new Date();
-			if (wish.getCreationDate() == null) wish.setCreationDate(currentDate);
+			/*if (wish.getCreationDate() == null) wish.setCreationDate(currentDate);
 			if (wish.getPriorityGroupOrder() == null) wish.setPriorityGroupOrder(1);
-
+*/
 			String result = createNullableGsonBuilder().toJson(wish);
 
 			return $prepareResponse(result);
