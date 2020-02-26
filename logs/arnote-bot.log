@@ -1,0 +1,2 @@
+10:24:39.946 [http-nio-8080-exec-1] INFO  console_logger  - ============== FILTER WISHES ============== 
+10:24:40.058 [http-nio-8080-exec-1] INFO  console_logger  - PAYLOAD: {"list":[]}

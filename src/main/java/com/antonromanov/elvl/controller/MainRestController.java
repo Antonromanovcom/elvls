@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
-import java.security.Principal;
 import java.util.*;
 import static com.antonromanov.elvl.utils.Utils.*;
 
@@ -18,7 +17,7 @@ import static com.antonromanov.elvl.utils.Utils.*;
  */
 @CrossOrigin()
 @RestController
-@RequestMapping("/rest/wishes")
+@RequestMapping("/api/quotes")
 public class MainRestController extends ControllerBase {
 
 	private static org.slf4j.Logger LOGGER = LoggerFactory.getLogger("console_logger");
@@ -42,20 +41,15 @@ public class MainRestController extends ControllerBase {
 	@Autowired
 	private EmailSender emailSender;*/
 
-
-	@CrossOrigin(origins = "*")
-	@PostMapping("/filter")
-	public ResponseEntity<String> findAll(Principal principal, @RequestBody String requestParam, HttpServletResponse resp) {
+	@PostMapping()
+	public ResponseEntity<String> findAll(HttpServletResponse resp) {
 
 		return $do(s -> {
 			LOGGER.info("============== FILTER WISHES ============== ");
-			LOGGER.info("VALUE: " + requestParam);
-			LOGGER.info("PRINCIPAL: " + principal.getName());
-		//	LocalUser localUser = getUserFromPrincipal(principal);
 
-		/*	List<Quote> wishes = mainService
-					.findAllWishesByWish(parseJsonToWish(ParseType.EDIT, requestParam, localUser).getWish(), localUser)
-					.orElseGet(ArrayList::new);*/
+			List<Quote> quotes = mainService
+					.findAllQuotes()
+					.orElseGet(ArrayList::new);
 
 			DTO dto = new DTO();
 //			dto.list.addAll(wishes);

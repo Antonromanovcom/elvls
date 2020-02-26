@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface MainService {
 
-	ResponseParseResult parseCsv(MultipartFile file, LocalUser localUser) throws Exception;
+	/*ResponseParseResult parseCsv(MultipartFile file, LocalUser localUser) throws Exception;
 
 	void clearCounter();
 
@@ -42,12 +42,12 @@ public interface MainService {
 
 	Integer calculateImplementationPeriod(Integer summ, LocalUser localUser);
 
-	List<Quote> getAllWishesByUserId(LocalUser user);
+	List<Quote> getAllWishesByUserId(LocalUser user);*/
 
-	Optional<List<Quote>> findAllWishesByWish(String Wish, LocalUser user);
+	Optional<List<Quote>> findAllQuotes();
 
-	Optional<List<Quote>> getAllRealizedWishes(LocalUser user);
+/*	Optional<List<Quote>> getAllRealizedWishes(LocalUser user);
 
-	Quote updateMonthGroup(Quote wish) throws BadIncomeParameter;
+	Quote updateMonthGroup(Quote wish) throws BadIncomeParameter;*/
 
 }

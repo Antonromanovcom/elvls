@@ -14,10 +14,6 @@ import com.antonromanov.elvl.model.WishDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
-import org.aspectj.lang.Signature;
-import org.passay.CharacterRule;
-import org.passay.EnglishCharacterData;
-import org.passay.PasswordGenerator;
 import org.slf4j.LoggerFactory;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -276,7 +272,7 @@ public class Utils {
 
 	}*/
 
-	public static String generateRandomPassword() {
+	/*public static String generateRandomPassword() {
 
 		List rules = Arrays.asList(new CharacterRule(EnglishCharacterData.UpperCase, 1),
 				new CharacterRule(EnglishCharacterData.LowerCase, 1), new CharacterRule(EnglishCharacterData.Digit, 1), new CharacterRule(EnglishCharacterData.Special, 1));
@@ -284,7 +280,7 @@ public class Utils {
 		PasswordGenerator generator = new PasswordGenerator();
 		String password = generator.generatePassword(8, rules);
 		return password;
-	}
+	}*/
 
 	public static String computerMonth(Integer proirity) {
 		Date date = new Date();
@@ -357,7 +353,7 @@ public class Utils {
 		}
 	}
 
-	public static String defineUserActionByMethodSignature(Signature signature) {
+/*	public static String defineUserActionByMethodSignature(Signature signature) {
 
 		String action = "UNKNOWN";
 
@@ -423,7 +419,7 @@ public class Utils {
 
 
 		return action;
-	}
+	}*/
 
 	private static boolean isInteger(String value) {
 		try {
