@@ -38,7 +38,7 @@ public class MainRestController extends ControllerBase {
 		// curl --location --request GET "http://localhost:8080/api/quotes"
 		return $do(s -> {
 			LOGGER.info("============== FIND ALL QUOTES ============== ");
-			return $prepareResponse(QuoteListDTO.builder().list(mainService.findAllQuotes()).build());
+			return $prepareResponse(PayloadDTO.builder().body(mainService.findAllQuotes()).build());
 		}, null, resp);
 	}
 
@@ -58,7 +58,7 @@ public class MainRestController extends ControllerBase {
 			if (isin.isBlank() || isin.length() != 12) {
 				throw new BadIncomeParameterException("Isin должен быть длиной 12 знаков и не пустой!");
 			} else {
-				return $prepareResponse(ElvlsDTO.builder().elvls(mainService.findAllElvlsByIsin(isin)
+				return $prepareResponse(PayloadDTO.builder().body(mainService.findAllElvlsByIsin(isin)
 						.orElseThrow(() -> new NoDataYetException("Нет еще рассчитанных elvls"))).build());
 			}
 		}, null, resp);
@@ -75,7 +75,7 @@ public class MainRestController extends ControllerBase {
 // curl --location --request GET "http://localhost:8080/api/quotes/elvls"
 		return $do(s -> {
 			LOGGER.info("============== ВСЕ ELVLS ============== ");
-			return $prepareResponse(ElvlsListDTO.builder().list(mainService.findAllElvls()).build());
+			return $prepareResponse(PayloadDTO.builder().body(mainService.findAllElvls()).build());
 		}, null, resp);
 	}
 
