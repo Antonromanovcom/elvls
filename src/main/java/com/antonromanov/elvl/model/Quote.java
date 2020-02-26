@@ -4,6 +4,10 @@ import javax.persistence.*;
 import com.antonromanov.elvl.dto.QuoteDto;
 import lombok.*;
 
+/**
+ * Котировка.
+ *
+ */
 @Entity
 @Getter
 @Setter

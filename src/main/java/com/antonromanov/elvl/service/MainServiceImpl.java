@@ -5,6 +5,7 @@ import com.antonromanov.elvl.model.*;
 import com.antonromanov.elvl.repositoty.ElvlsRepo;
 import com.antonromanov.elvl.repositoty.QuoteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -32,11 +33,10 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
-	public Double addQuote(QuoteDto dto) {
+	public Pair<Quote, Double> addQuote(QuoteDto dto) {
 		Double elvls =  calculateElvls((findAllElvlsByIsin(dto.getIsin())
 				.orElseGet(()-> elvlsRepo.saveAndFlush(new Elvls(dto.getIsin(), dto.getBid())))), dto);
-		quoteRepo.save(Quote.$fromDto(dto));
-		return elvls;
+		return Pair.of(quoteRepo.saveAndFlush(Quote.$fromDto(dto)), elvls);
 	}
 
 	private Double calculateElvls(Elvls elvls, QuoteDto dto) {

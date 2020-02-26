@@ -1,13 +1,14 @@
 package com.antonromanov.elvl.model;
 
-import com.antonromanov.elvl.dto.QuoteDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 
+/**
+ * Рассчитанный elvls.
+ */
 @Entity
 @Getter
 @Setter

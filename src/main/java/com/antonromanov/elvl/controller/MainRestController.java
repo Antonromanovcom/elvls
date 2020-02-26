@@ -1,17 +1,19 @@
 package com.antonromanov.elvl.controller;
 
-import com.antonromanov.elvl.dto.QuoteDto;
-import com.antonromanov.elvl.model.*;
+
+import com.antonromanov.elvl.dto.*;
+import com.antonromanov.elvl.exceptions.BadIncomeParameterException;
+import com.antonromanov.elvl.exceptions.NoDataYetException;
+import com.antonromanov.elvl.model.Quote;
 import com.antonromanov.elvl.service.MainService;
 import com.antonromanov.elvl.utils.ControllerBase;
-import lombok.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
-import static com.antonromanov.elvl.utils.Utils.*;
+
 
 /**
  * Основной REST-контроллер приложения.
@@ -22,77 +24,83 @@ public class MainRestController extends ControllerBase {
 
 	private static org.slf4j.Logger LOGGER = LoggerFactory.getLogger("console_logger");
 
-	@Data
-	private class DTO {
-		private List<Quote> list = new ArrayList<>();
-	}
-
-	@Data
-	private class DTOwithOrder {
-		private List<WishDTOList> list = new ArrayList<>();
-	}
-
 	@Autowired
 	MainService mainService;
 
+	/**
+	 * Найти все котировки.
+	 *
+	 * @param resp
+	 * @return
+	 */
 	@GetMapping()
-	public ResponseEntity<String> findAll(HttpServletResponse resp) {
-
+	public ResponseEntity<String> findAllQuotes(HttpServletResponse resp) {
+		// curl --location --request GET "http://localhost:8080/api/quotes"
 		return $do(s -> {
-			LOGGER.info("============== FILTER WISHES ============== ");
-			List<Quote> quotes = mainService.findAllQuotes();
-			DTO dto = new DTO();
-			dto.list.addAll(quotes);
-			String res = createGsonBuilder().toJson(dto);
-			LOGGER.info("PAYLOAD: " + res);
-
-			return $prepareResponse(res);
-
-		}, null, null, null, resp);
+			LOGGER.info("============== FIND ALL QUOTES ============== ");
+			return $prepareResponse(QuoteListDTO.builder().list(mainService.findAllQuotes()).build());
+		}, null, resp);
 	}
 
+	/**
+	 * Получить elvls по isin.
+	 *
+	 * @param isin
+	 * @param resp
+	 * @return
+	 */
 	@GetMapping("/byIsin/{isin}")
-	public ResponseEntity<String> fetByIsin(@PathVariable String isin, HttpServletResponse resp) {
-
-// curl --location --request GET "http://localhost:8080/api/quotes/byIsin/111" \ --header "Content-Type: application/json"
-
+	public ResponseEntity<String> getElvlsByIsin(@PathVariable(value = "isin") String isin, HttpServletResponse resp) {
+		// curl --location --request GET "http://localhost:8080/api/quotes/byIsin/isin=11"
 		return $do(s -> {
-			LOGGER.info("============== FILTER WISHES ============== ");
-			String res = createGsonBuilder().toJson(mainService.findAllElvlsByIsin(isin).get());
-			LOGGER.info("PAYLOAD: " + res);
-			return $prepareResponse(res);
-
-		}, null, null, null, resp);
+			LOGGER.info("============== GET ELVLS BY ISIN ============== ");
+			LOGGER.info("ISIN: {}", isin);
+			if (isin.isBlank() || isin.length() != 12) {
+				throw new BadIncomeParameterException("Isin должен быть длиной 12 знаков и не пустой!");
+			} else {
+				return $prepareResponse(ElvlsDTO.builder().elvls(mainService.findAllElvlsByIsin(isin)
+						.orElseThrow(() -> new NoDataYetException("Нет еще рассчитанных elvls"))).build());
+			}
+		}, null, resp);
 	}
 
+	/**
+	 * Запросить все elvls.
+	 *
+	 * @param resp
+	 * @return
+	 */
 	@GetMapping("/elvls")
 	public ResponseEntity<String> getAllElvls(HttpServletResponse resp) {
-
 // curl --location --request GET "http://localhost:8080/api/quotes/elvls"
-
 		return $do(s -> {
-			LOGGER.info("============== FILTER WISHES ============== ");
-			String res = createGsonBuilder().toJson(mainService.findAllElvls());
-			LOGGER.info("PAYLOAD: " + res);
-			return $prepareResponse(res);
-
-		}, null, null, null, resp);
+			LOGGER.info("============== ВСЕ ELVLS ============== ");
+			return $prepareResponse(ElvlsListDTO.builder().list(mainService.findAllElvls()).build());
+		}, null, resp);
 	}
 
+	/**
+	 * Добавить котировку.
+	 *
+	 * @param dto
+	 * @param resp
+	 * @return
+	 */
 	@PostMapping()
 	public ResponseEntity<String> addQuote(@RequestBody QuoteDto dto, HttpServletResponse resp) {
 
 		return $do(s -> {
-			LOGGER.info("============== FILTER WISHES ============== :", dto);
-		//	List<Quote> quotes = mainService.findAllQuotes();
-			Double d = mainService.addQuote(dto);
-			DTO dto1 = new DTO();
-			//dto1.list.addAll(quotes);
-			String res = createGsonBuilder().toJson(dto1);
-			LOGGER.info("PAYLOAD: " + res);
+			LOGGER.info("============== ДОБАВЛЕНИЕ КОТИРОВКИ ============== :", dto);
 
-			return $prepareResponse(res);
-
-		}, null, null, null, resp);
+			/**
+			 *  Организовано примитивным способом, потому что Spring Validator крайне плохая практика:
+			 *  отладка и проброс эксепшеном на удаленном сервере еще и внутри самописных валидаторов - это отдельная жопа.
+			 *
+			 */
+			if (dto.getBid()>dto.getAsk()) throw new BadIncomeParameterException("bid должен быть меньше ask!");
+			if (dto.getIsin().length()!=12) throw new BadIncomeParameterException("Ожидаемая длина isin - 12 знаков!");
+			Pair<Quote, Double> pair = mainService.addQuote(dto);
+			return $prepareResponse(new NewQuoteDTO(pair.getFirst(), pair.getSecond()));
+		}, null,  resp);
 	}
 }

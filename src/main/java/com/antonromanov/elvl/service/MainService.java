@@ -4,10 +4,11 @@ import com.antonromanov.elvl.dto.QuoteDto;
 import com.antonromanov.elvl.model.*;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.util.Pair;
 
 public interface MainService {
 	List<Quote> findAllQuotes();
-	Double addQuote(QuoteDto dto);
+	Pair<Quote, Double> addQuote(QuoteDto dto);
 	Optional<Elvls> findAllElvlsByIsin(String isin);
 	List<Elvls> findAllElvls();
 }
