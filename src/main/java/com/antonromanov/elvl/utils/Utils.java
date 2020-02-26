@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.antonromanov.elvl.dto.QuoteDto;
+import com.antonromanov.elvl.model.Elvls;
 import com.antonromanov.elvl.model.Quote;
 import com.antonromanov.elvl.exceptions.*;
 import com.antonromanov.elvl.model.WishDTO;
@@ -306,6 +308,10 @@ public class Utils {
 		return (month + (proirity - 1)) > 12 ? localDate.getYear() + 1 : localDate.getYear();
 	}
 
+	/*public static Double calculateElvls(Elvls elvls, QuoteDto dto) {
+		return dto.getBid() >= elvls.getElvls() ?  dto.getBid() : dto.getAsk();
+	}
+*/
 	public static WishDTO prepareWishDTO(Quote w, int maxPrior) {
 		/*return WishDTO.builder()
 				.id(w.getId())

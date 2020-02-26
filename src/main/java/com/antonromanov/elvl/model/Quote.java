@@ -1,6 +1,7 @@
 package com.antonromanov.elvl.model;
 
 import javax.persistence.*;
+import com.antonromanov.elvl.dto.QuoteDto;
 import lombok.*;
 
 @Entity
@@ -25,5 +26,15 @@ public class Quote {
 
     @Column(name = "ask")
     private Integer ask;
+
+    public Quote(String isin, Double bid, Integer ask) {
+        this.isin = isin;
+        this.bid = bid;
+        this.ask = ask;
+    }
+
+    public static Quote $fromDto(QuoteDto dto){
+        return new Quote(dto.getIsin(), dto.getBid(), dto.getAsk());
+    }
 }
 
