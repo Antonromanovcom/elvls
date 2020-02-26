@@ -1,3 +1,6 @@
+--changeset a.romanov:1
+
+create sequence elvls.quotes_id_seq;
 
 create table elvls.QUOTE
 (

@@ -15,7 +15,7 @@ public class Quote {
     @Id
     @Column(name="id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quotes_seq_gen")
-    @SequenceGenerator(name = "quotes_seq_gen", sequenceName ="wishes_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "quotes_seq_gen", sequenceName ="elvls.quotes_id_seq", allocationSize = 1)
     private long id;
 
     @Column(name = "isin", length = 12)
