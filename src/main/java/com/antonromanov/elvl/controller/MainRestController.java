@@ -91,6 +91,7 @@ public class MainRestController extends ControllerBase {
 
 		return $do(s -> {
 			LOGGER.info("============== ДОБАВЛЕНИЕ КОТИРОВКИ ============== :", dto);
+			LOGGER.info("bid: ", dto.getBid());
 
 			/**
 			 *  Организовано примитивным способом, потому что Spring Validator крайне плохая практика:

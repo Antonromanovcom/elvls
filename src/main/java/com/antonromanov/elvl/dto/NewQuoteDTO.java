@@ -7,7 +7,7 @@ import lombok.Data;
 public class NewQuoteDTO implements ResponseDTO{
 	private String isin;
 	private Double bid;
-	private Integer ask;
+	private Double ask;
 	private Double elvls;
 
 	public NewQuoteDTO(Quote quote, Double elvls) {

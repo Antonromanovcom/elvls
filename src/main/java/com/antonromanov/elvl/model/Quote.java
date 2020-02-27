@@ -29,9 +29,9 @@ public class Quote {
     private Double bid;
 
     @Column(name = "ask")
-    private Integer ask;
+    private Double ask;
 
-    public Quote(String isin, Double bid, Integer ask) {
+    public Quote(String isin, Double bid, Double ask) {
         this.isin = isin;
         this.bid = bid;
         this.ask = ask;
